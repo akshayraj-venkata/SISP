@@ -1,0 +1,49 @@
+#define trigPin D1
+#define echoPin D4
+int inputpin=9;
+int pirstate=LOW;
+int val=0;
+void setup() {
+  // put your setup code here, to run once:
+Serial.begin (9600);
+pinMode(inputpin,INPUT);
+pinMode(trigPin,OUTPUT);
+pinMode(echoPin,INPUT);
+pinMode(4,OUTPUT);
+pinMode(15,OUTPUT);
+pinMode(12,OUTPUT);
+}
+
+void loop() {
+long distance, duration, spd, tme=8;
+digitalWrite(4,HIGH);
+delay(1000);
+digitalWrite(4,LOW);
+delay(1000);
+digitalWrite(15,HIGH);
+delay(1000);
+digitalWrite(15,LOW);
+delay(1000);
+digitalWrite(12,HIGH);
+delay(8000);
+digitalWrite(12,LOW);
+delay(1000);
+val=digitalRead(inputpin);
+if(val==HIGH)
+{
+digitalWrite(trigPin,LOW);
+delayMicroseconds(2);
+digitalWrite(trigPin,HIGH);
+delayMicroseconds(10);
+digitalWrite(trigPin,LOW);
+duration=pulseIn(echoPin,HIGH);
+distance=(duration/2)/29.1;
+spd=(distance*1000)/tme;
+spd=spd*3.6;
+if(spd<=40)
+{
+Serial.print(spd);
+Serial.println(" kmph");
+}
+}
+}
